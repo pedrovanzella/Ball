@@ -1,0 +1,2 @@
+#define ball_VERSION_MAJOR @ball_VERSION_MAJOR@
+#define ball_VERSION_MINOR @ball_VERSION_MINOR@
