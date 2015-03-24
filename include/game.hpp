@@ -18,6 +18,8 @@ namespace Dolly {
 	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
 
 	sf::Window mWindow;
+	static const sf::Time TimePerFrame;
+	bool running;
     };
 }
 
