@@ -1,7 +1,7 @@
 #include <iostream>
 #include "config.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/OpenGL.hpp>S
+#include <SFML/OpenGL.hpp>
 
 using namespace std;
 
