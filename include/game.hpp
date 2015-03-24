@@ -2,6 +2,7 @@
 #define DOLLY_GAME_HPP
 
 #include <SFML/Graphics.hpp>
+#include <SFML/OpenGL.hpp>
 
 namespace Dolly {
     class Game {
@@ -20,6 +21,9 @@ namespace Dolly {
 	sf::Window mWindow;
 	static const sf::Time TimePerFrame;
 	bool running;
+
+	GLuint shader_programme;
+	GLuint vao;
     };
 }
 
