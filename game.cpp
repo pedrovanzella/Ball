@@ -5,9 +5,17 @@ namespace Dolly {
     const sf::Time Game::TimePerFrame = sf::seconds(1.0f / 60.0f); // Run at 60fps
 
     Game::Game():
-	mWindow(sf::VideoMode(800, 600), "Super Dollynho Ball", sf::Style::Default, sf::ContextSettings(32)),
+	mWindow(sf::VideoMode(800, 600), "Super Dollynho Ball", sf::Style::Default, sf::ContextSettings(24, 8, 4, 4, 1)),
 	running(true)
     {
+	// sf::ContextSettings(depth stencil, antialiasing, major, minor)
+	sf::ContextSettings settings = mWindow.getSettings();
+
+	std::cout << "depth bits:" << settings.depthBits << std::endl;
+	std::cout << "stencil bits:" << settings.stencilBits << std::endl;
+	std::cout << "antialiasing level:" << settings.antialiasingLevel << std::endl;
+	std::cout << "version:" << settings.majorVersion << "." << settings.minorVersion << std::endl;
+
 	mWindow.setVerticalSyncEnabled(true);
     }
 
