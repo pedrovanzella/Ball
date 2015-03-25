@@ -2,32 +2,46 @@
 #include <iostream>
 
 namespace Dolly {
-    const sf::Time Game::TimePerFrame = sf::seconds(1.0f / 60.0f); // Run at 60fps
+
+    void error_callback(int error, const char* description)
+    {
+	std::cerr << error << ": " << description << std::endl;
+    }
 
     Game::Game():
-	mWindow(sf::VideoMode(800, 600), "Super Dollynho Ball", sf::Style::Default, sf::ContextSettings(32, 8, 4, 4, 1)),
 	running(true)
     {
-	// sf::ContextSettings(depth stencil, antialiasing, major, minor)
-	sf::ContextSettings settings = mWindow.getSettings();
+	// start GL context and OS window using GLFW
+	if (!glfwInit()) {
+	    throw std::runtime_error("could not start GLFW3\n");
+	}
 
-	std::cout << "depth bits:" << settings.depthBits << std::endl;
-	std::cout << "stencil bits:" << settings.stencilBits << std::endl;
-	std::cout << "antialiasing level:" << settings.antialiasingLevel << std::endl;
-	std::cout << "version:" << settings.majorVersion << "." << settings.minorVersion << std::endl;
+	glfwSetErrorCallback(error_callback);
 
-	mWindow.setVerticalSyncEnabled(true);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	
+	mWindow = glfwCreateWindow(800, 600, "Super Dolly Ball", NULL, NULL);
+	if (!mWindow) {
+	    throw std::runtime_error("could not open window\n");
+	    glfwTerminate();
+	}
+	glfwMakeContextCurrent(mWindow);
+	glewExperimental = GL_TRUE;
+	if(glewInit() != GLEW_OK)
+	    throw std::runtime_error("glewInit failed");
     }
 
     int Game::Run(void)
     {
-	// Set stuff up etc
+	// get version info
 	const GLubyte* renderer = glGetString(GL_RENDERER);
 	const GLubyte* version = glGetString(GL_VERSION);
-
-	std::cout << "Renderer: " << renderer << std::endl;
-	std::cout << "OpenGL Version: " << version << std::endl;
-
+	printf("Renderer: %s\n", renderer);
+	printf("OpenGL version: %s\n", version);
+    
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
@@ -89,79 +103,33 @@ namespace Dolly {
 
     void Game::GameLoop(void)
     {
-	sf::Clock clock;
-	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-
 	while (running) {
-	    sf::Time elapsedTime = clock.restart();
-	    timeSinceLastUpdate += elapsedTime;
-
-	    while (timeSinceLastUpdate > TimePerFrame) {
-		timeSinceLastUpdate -= TimePerFrame;
-
-		processEvents();
-
-		update(TimePerFrame); // Fixed update
-	    }
-
-	    updateStatistics(elapsedTime);
 	    render();
 	}
     }
 
-    void Game::update(sf::Time elapsedTime)
+    void Game::update(double elapsedTime)
     {
     }
 
     void Game::processEvents()
     {
-	sf::Event event;
-	while (mWindow.pollEvent(event)) {
-	    switch (event.type) {
-	    case sf::Event::KeyPressed:
-		handlePlayerInput(event.key.code, true);
-		break;
-
-	    case sf::Event::KeyReleased:
-		handlePlayerInput(event.key.code, false);
-		break;
-
-	    case sf::Event::Closed:
-		running = false;
-		break;
-
-	    case sf::Event::Resized:
-		glViewport(0, 0, event.size.width, event.size.height);
-		break;
-
-	    default:
-		break;
-	    }
-	}
     }
 
     void Game::render()
     {
 	// Do OpenGL magic? Nah! Delegate!
 	// But, for now, do OpenGL magic.
+	// wipe the drawing surface
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	glUseProgram(shader_programme);
 	glBindVertexArray(vao);
 	// draw points 0-3 from the currently bound VAO with shaders
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 	// update other events like input handling
-
-	mWindow.display();
+	glfwPollEvents();
+	// put the stuff we've been drawing on the display
+	glfwSwapBuffers(mWindow);
     }
 
-    void Game::updateStatistics(sf::Time elapsedTime)
-    {
-	// Update FPS count
-    }
-
-    void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
-    {
-
-    }
 }

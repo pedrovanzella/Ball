@@ -7,8 +7,8 @@
 #define glDeleteVertexArray glDeleteVertexArrayAPPLE
 #endif /* __APPLE__ */
 
-#include <SFML/Graphics.hpp>
-#include <SFML/OpenGL.hpp>
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 namespace Dolly {
     class Game {
@@ -18,14 +18,11 @@ namespace Dolly {
     private:
 	void GameLoop(void);
 	void processEvents();
-	void update(sf::Time elapsedTime);
+	void update(double elapsedTime);
 	void render();
 
-	void updateStatistics(sf::Time elapsedTime);	
-	void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
-
-	sf::Window mWindow;
-	static const sf::Time TimePerFrame;
+	GLFWwindow* mWindow;
+	static const double TimePerFrame;
 	bool running;
 
 	GLuint shader_programme;

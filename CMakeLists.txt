@@ -19,15 +19,24 @@ configure_file(
   )
 include_directories("${PROJECT_BINARY_DIR}")
 
-# Detect and add SFML
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake_modules" ${CMAKE_MODULE_PATH})
-#Find any version 2.X of SFML
-#See the FindSFML.cmake file for additional details and instructions
-find_package(SFML 2.2 REQUIRED system window graphics network audio)
-if(SFML_FOUND)
-  include_directories(${SFML_INCLUDE_DIR})
-  target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES})
-endif()
+# GLFW
+find_package(PkgConfig REQUIRED)
+pkg_search_module(GLFW REQUIRED glfw3)
+if(GLFW_FOUND)
+    message(STATUS "Found GLFW libraries:")
+    message(STATUS ${GLFW_LIBRARIES})
+    include_directories(${GLFW_INCLUDE_DIRS})
+    target_link_libraries(${EXECUTABLE_NAME} ${GLFW_LIBRARIES})
+endif(GLFW_FOUND)
+
+# GLEW
+find_package(GLEW REQUIRED)
+if(GLEW_FOUND)
+    message(STATUS "Found GLEW libraries:")
+    message(STATUS ${GLEW_LIBRARIES})
+    include_directories(${GLEW_INCLUDE_PATH})
+    target_link_libraries(${EXECUTABLE_NAME} ${GLEW_LIBRARIES})
+endif(GLEW_FOUND)
 
 # OpenGL
 find_package(OpenGL REQUIRED)
@@ -45,6 +54,16 @@ if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   target_link_libraries(${EXECUTABLE_NAME} ${Boost_LIBRARIES})
 endif()
+
+
+IF(APPLE)
+    SET(EXTRA_LIBS "-framework Cocoa -framework OpenGL")
+ELSEIF(MSVC)
+	SET(EXTRA_LIBS "glu32.lib" "opengl32.lib")
+ELSE(APPLE)
+    SET(EXTRA_LIBS ${GLFW_LDFLAGS_OTHER})
+ENDIF(APPLE)
+
 
 # Install target
 install(TARGETS ${EXECUTABLE_NAME} DESTINATION bin)
