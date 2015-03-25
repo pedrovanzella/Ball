@@ -1,6 +1,12 @@
 #ifndef DOLLY_GAME_HPP
 #define DOLLY_GAME_HPP
 
+#ifdef __APPLE__
+#define glGenVertexArrays glGenVertexArraysAPPLE
+#define glBindVertexArray glBindVertexArrayAPPLE
+#define glDeleteVertexArray glDeleteVertexArrayAPPLE
+#endif /* __APPLE__ */
+
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
