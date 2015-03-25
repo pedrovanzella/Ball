@@ -5,7 +5,7 @@ namespace Dolly {
     const sf::Time Game::TimePerFrame = sf::seconds(1.0f / 60.0f); // Run at 60fps
 
     Game::Game():
-	mWindow(sf::VideoMode(800, 600), "Super Dollynho Ball", sf::Style::Default, sf::ContextSettings(24, 8, 4, 4, 1)),
+	mWindow(sf::VideoMode(800, 600), "Super Dollynho Ball", sf::Style::Default, sf::ContextSettings(32, 8, 4, 4, 1)),
 	running(true)
     {
 	// sf::ContextSettings(depth stencil, antialiasing, major, minor)
@@ -55,14 +55,14 @@ namespace Dolly {
 	// Define shaders
 	/* http://en.wikipedia.org/wiki/OpenGL_Shading_Language */
 	const char* vertex_shader =
-	    "#version 110\n" /* 400 for OpenGL 4, 150 for OpenGL 3 */
+	    "#version 400\n" /* 400 for OpenGL 4, 150 for OpenGL 3 */
 	    "in vec3 vp;"
 	    "void main() {"
 	    "  gl_Position = vec4(vp, 1.0);"
 	    "}";
     
 	const char* fragment_shader =
-	    "#version 110\n"
+	    "#version 400\n"
 	    "out vec4 frag_colour;"
 	    "void main() {"
 	    "  frag_colour = vec4(0.5, 0.0, 0.5, 1.0);"
