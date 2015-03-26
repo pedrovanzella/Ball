@@ -3,7 +3,8 @@
 ## Required Packages:
 * cmake 3.1
 * pkgconf
-* glfw
+* libxrand-dev and libxi-dev on linux
+* glfw3
 * glew
 * boost
 * openGL 4.1

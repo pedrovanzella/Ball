@@ -1,5 +1,6 @@
 #include "include/game.hpp"
 #include <iostream>
+#include <stdexcept>
 
 namespace Dolly {
 
@@ -39,8 +40,8 @@ namespace Dolly {
 	// get version info
 	const GLubyte* renderer = glGetString(GL_RENDERER);
 	const GLubyte* version = glGetString(GL_VERSION);
-	printf("Renderer: %s\n", renderer);
-	printf("OpenGL version: %s\n", version);
+	std::cout << "Renderer: " << renderer << std::endl;
+	std::cout << "OpenGL version: " << version << std::endl;
     
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
