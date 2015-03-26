@@ -86,6 +86,7 @@ namespace Dolly {
 
     void Game::Stop(void)
     {
+	std::cout << "Finishing up..." << std::endl;
 	running = false;
 	// Do any cleanup necessary
     }

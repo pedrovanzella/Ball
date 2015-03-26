@@ -73,5 +73,8 @@ namespace Dolly {
 
     void TriangleState::handleInput()
     {
+	if (glfwGetKey(game->mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+	    game->Stop();
+	}
     }
 }
