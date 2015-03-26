@@ -1,4 +1,6 @@
 #include "include/game.hpp"
+#include "include/game_state.hpp"
+#include "include/states/triangle_state.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -33,10 +35,7 @@ namespace Dolly {
 	glewExperimental = GL_TRUE;
 	if(glewInit() != GLEW_OK)
 	    throw std::runtime_error("glewInit failed");
-    }
 
-    int Game::Run(void)
-    {
 	// get version info
 	const GLubyte* renderer = glGetString(GL_RENDERER);
 	const GLubyte* version = glGetString(GL_VERSION);
@@ -46,57 +45,40 @@ namespace Dolly {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	/* OTHER STUFF GOES HERE NEXT */
-	float points[] = {
-	    0.0f,  0.5f, 0.0f,
-	    0.5f, -0.5f, 0.0f,
-	    -0.5f, -0.5f, 0.0f
-	};
-    
-	// Vertex Buffer Object
-	GLuint vbo = 0;
-	glGenBuffers(1, &vbo);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, 9 * sizeof(float), points, GL_STATIC_DRAW);
-    
-	// Vertex Attribute Object
-	vao = 0;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
- 
-	// Define shaders
-	/* http://en.wikipedia.org/wiki/OpenGL_Shading_Language */
-	const char* vertex_shader =
-	    "#version 400\n" /* 400 for OpenGL 4, 150 for OpenGL 3 */
-	    "in vec3 vp;"
-	    "void main() {"
-	    "  gl_Position = vec4(vp, 1.0);"
-	    "}";
-    
-	const char* fragment_shader =
-	    "#version 400\n"
-	    "out vec4 frag_colour;"
-	    "void main() {"
-	    "  frag_colour = vec4(0.5, 0.0, 0.5, 1.0);"
-	    "}";
-    
-	// Compile shaders
-	GLuint vs = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vs, 1, &vertex_shader, NULL);
-	glCompileShader(vs);
-	GLuint fs = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fs, 1, &fragment_shader, NULL);
-	glCompileShader(fs);
-    
-	// Create Shader Program
-	shader_programme = glCreateProgram();
-	glAttachShader(shader_programme, fs);
-	glAttachShader(shader_programme, vs);
-	glLinkProgram(shader_programme);
+	// Start at TriangleState
+	this->states.push(new TriangleState());
+    }
 
+    void Game::pushState(GameState* state)
+    {
+	this->states.push(state);
+    }
+
+    void Game::popState()
+    {
+	delete this->states.top(); // Free the memory. Would be better to use some new C++11 stuff
+	this->states.pop();
+    }
+
+    GameState* Game::peekState()
+    {
+	if (this->states.empty()) {
+	    return nullptr;
+	}
+	return this->states.top();
+    }
+
+    void Game::changeState(GameState* state)
+    {
+	if (!this->states.empty()) {
+	    popState();
+	}
+
+	pushState(state);
+    }
+
+    int Game::Run(void)
+    {
 	// Run main loop
 	GameLoop();
 	return 0;
@@ -105,32 +87,20 @@ namespace Dolly {
     void Game::GameLoop(void)
     {
 	while (running) {
-	    render();
+	    float deltaTime = 0.0f;
+	    if (peekState() == nullptr) {
+		continue;
+	    }
+	    peekState()->handleInput();
+	    peekState()->update(deltaTime);
+
+	    // wipe the drawing surface
+	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	    peekState()->draw(deltaTime);
+
+	    // put the stuff we've been drawing on the display
+	    glfwSwapBuffers(mWindow);
 	}
     }
-
-    void Game::update(double elapsedTime)
-    {
-    }
-
-    void Game::processEvents()
-    {
-    }
-
-    void Game::render()
-    {
-	// Do OpenGL magic? Nah! Delegate!
-	// But, for now, do OpenGL magic.
-	// wipe the drawing surface
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glUseProgram(shader_programme);
-	glBindVertexArray(vao);
-	// draw points 0-3 from the currently bound VAO with shaders
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	// update other events like input handling
-	glfwPollEvents();
-	// put the stuff we've been drawing on the display
-	glfwSwapBuffers(mWindow);
-    }
-
 }

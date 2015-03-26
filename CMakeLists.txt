@@ -6,7 +6,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(SOURCE_FILES main.cpp game.cpp)
+set(SOURCE_FILES main.cpp game.cpp states/triangle_state.cpp)
 set(EXECUTABLE_NAME Ball)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
