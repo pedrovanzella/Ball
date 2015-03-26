@@ -33,7 +33,7 @@ namespace Dolly {
 	
 	void GameLoop(void);
 
-	static const double TimePerFrame;
+	static const float MS_PER_UPDATE;
 	bool running;
 
 	GLuint shader_programme;

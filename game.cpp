@@ -6,6 +6,8 @@
 
 namespace Dolly {
 
+    const float Game::MS_PER_UPDATE = 1/60.0f;
+
     void error_callback(int error, const char* description)
     {
 	std::cerr << error << ": " << description << std::endl;
@@ -93,18 +95,30 @@ namespace Dolly {
 
     void Game::GameLoop(void)
     {
+	float previous = glfwGetTime();
+	float lag = 0.0;
+
 	while (running) {
-	    float deltaTime = 0.0f;
+	    float current = glfwGetTime();
+	    float deltaTime = current - previous;
+	    previous = current;
+	    lag += deltaTime;
+
 	    if (peekState() == nullptr) {
 		continue;
 	    }
+
 	    peekState()->handleInput();
-	    peekState()->update(deltaTime);
+
+	    while (lag >= MS_PER_UPDATE) {
+		peekState()->update(deltaTime);
+		lag -= MS_PER_UPDATE;
+	    }
 
 	    // wipe the drawing surface
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	    peekState()->draw(deltaTime);
+	    peekState()->draw(lag / MS_PER_UPDATE);
 
 	    // put the stuff we've been drawing on the display
 	    glfwSwapBuffers(mWindow);
