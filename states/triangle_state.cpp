@@ -1,8 +1,10 @@
 #include "../include/states/triangle_state.hpp"
 
 namespace Dolly {
-    TriangleState::TriangleState()
+    TriangleState::TriangleState(Game* game)
     {
+	this->game = game;
+
 	/* OTHER STUFF GOES HERE NEXT */
 	float points[] = {
 	    0.0f,  0.5f, 0.0f,

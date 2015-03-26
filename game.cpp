@@ -46,7 +46,7 @@ namespace Dolly {
 	glDepthFunc(GL_LESS);
 
 	// Start at TriangleState
-	this->states.push(new TriangleState());
+	this->states.push(new TriangleState(this));
     }
 
     void Game::pushState(GameState* state)

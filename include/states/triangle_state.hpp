@@ -2,11 +2,13 @@
 #define STATES_TRIANGLE_STATE_HPP
 
 #include "../game_state.hpp"
+#include "../game.hpp"
 
 namespace Dolly {
     class TriangleState: public GameState {
     public:
-	TriangleState();
+	TriangleState * create(Game* game) const { return new TriangleState(game); } // Virtual Constructor
+	TriangleState(Game* game);
 	
 	void draw(const float deltaTime);
 	void update(const float deltaTime);
