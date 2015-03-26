@@ -33,10 +33,6 @@ namespace Dolly {
 	
 	void GameLoop(void);
 
-	// void processEvents();
-	// void update(double elapsedTime);
-	// void render();
-
 	static const double TimePerFrame;
 	bool running;
 
