@@ -84,6 +84,12 @@ namespace Dolly {
 	return 0;
     }
 
+    void Game::Stop(void)
+    {
+	running = false;
+	// Do any cleanup necessary
+    }
+
     void Game::GameLoop(void)
     {
 	while (running) {

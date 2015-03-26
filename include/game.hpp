@@ -18,6 +18,7 @@ namespace Dolly {
     public:
 	Game();
 	int Run(void);
+	void Stop(void);
 
 	GLFWwindow* mWindow;
 
@@ -25,6 +26,7 @@ namespace Dolly {
 	void popState();
 	void changeState(GameState* state);
 	GameState* peekState();
+
 	
     private:
 	std::stack<GameState*> states;
