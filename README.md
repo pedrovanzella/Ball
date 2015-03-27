@@ -1,4 +1,4 @@
-#Super Monkey Ball clone
+#Super Dollynho Ball
 
 ## Required Packages:
 * cmake 3.1
