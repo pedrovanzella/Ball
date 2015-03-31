@@ -3,6 +3,7 @@
 
 #include "../game_state.hpp"
 #include "../game.hpp"
+#include "../util/shader_loader.hpp"
 
 namespace Dolly {
     class TriangleState: public GameState {
@@ -14,7 +15,7 @@ namespace Dolly {
 	void update(const float deltaTime);
 	void handleInput();
     private:
-	GLuint shader_programme;
+	ShaderLoader* shaderLoader;
 	GLuint vao;
     };
 }

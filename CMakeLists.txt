@@ -6,9 +6,13 @@ if(CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
-set(SOURCE_FILES main.cpp game.cpp states/triangle_state.cpp)
+set(STATE_SOURCE_FILES states/triangle_state.cpp)
+set(UTIL_SOURCE_FILES util/shader_loader.cpp)
+set(SOURCE_FILES main.cpp game.cpp ${STATE_SOURCE_FILES} ${UTIL_SOURCE_FILES})
 set(EXECUTABLE_NAME Ball)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
+
+file(COPY shaders DESTINATION .)
 
 # Set version information in a config.h file
 set(ball_VERSION_MAJOR 1)
