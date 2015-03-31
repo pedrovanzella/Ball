@@ -61,6 +61,11 @@ namespace Dolly {
 
     void CubeState::draw(const float deltaTime)
     {
+	glUseProgram(shaderLoader->shaderProgram());
+	glBindVertexArray(vao);
+
+	glDrawArrays(GL_TRIANGLES, 0, 12 * 3);
+
     }
 
     void CubeState::update(const float deltaTime)
@@ -69,6 +74,7 @@ namespace Dolly {
 
     void CubeState::handleInput()
     {
+	glfwPollEvents();
 	if (glfwGetKey(game->mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 	    game->Stop();
 	}
