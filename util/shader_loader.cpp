@@ -32,15 +32,17 @@ namespace Dolly {
     void ShaderLoader::loadVertexShader(std::string path)
     {
 	const char* shader_str = readFile(path).c_str();
+	GLint len = strlen(shader_str);
 	vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, &shader_str, NULL);
+	glShaderSource(vertexShader, 1, &shader_str, &len);
     }
 
     void ShaderLoader::loadFragmentShader(std::string path)
     {
 	const char* shader_str = readFile(path).c_str();
+	GLint len = strlen(shader_str);
 	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, &shader_str, NULL);
+	glShaderSource(fragmentShader, 1, &shader_str, &len);
     }
 
     void ShaderLoader::compileShaders()
