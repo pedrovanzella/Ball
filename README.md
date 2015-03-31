@@ -6,5 +6,6 @@
 * libxrand-dev and libxi-dev on linux
 * glfw3
 * glew
+* glm
 * boost
 * openGL 4.1
