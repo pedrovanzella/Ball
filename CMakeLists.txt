@@ -13,6 +13,9 @@ set(EXECUTABLE_NAME Ball)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
 file(COPY shaders DESTINATION .)
+file(MAKE_DIRECTORY models)
+set(MODELS models/cow.obj)
+file(COPY ${MODELS} DESTINATION models)
 
 # Set version information in a config.h file
 set(ball_VERSION_MAJOR 1)
