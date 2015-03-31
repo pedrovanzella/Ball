@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 project(Ball)
 
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 # Enable debug symbols by default
 if(CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE Debug)
@@ -61,6 +62,12 @@ if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
   target_link_libraries(${EXECUTABLE_NAME} ${Boost_LIBRARIES})
 endif()
+
+# GLM
+find_package(GLM REQUIRED)
+if(GLM_FOUND)
+    include_directories(${GLM_INCLUDE_DIRS})
+endif(GLM_FOUND)
 
 
 IF(APPLE)
