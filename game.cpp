@@ -1,6 +1,7 @@
 #include "include/game.hpp"
 #include "include/game_state.hpp"
 #include "include/states/triangle_state.hpp"
+#include "include/states/cube_state.hpp"
 #include <iostream>
 #include <stdexcept>
 
@@ -48,7 +49,7 @@ namespace Dolly {
 	glDepthFunc(GL_LESS);
 
 	// Start at TriangleState
-	this->states.push(new TriangleState(this));
+	this->states.push(new CubeState(this));
     }
 
     void Game::pushState(GameState* state)
