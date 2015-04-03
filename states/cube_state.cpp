@@ -3,6 +3,7 @@
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <iostream>
 
 namespace Dolly {
     CubeState::CubeState(Game* game)
@@ -71,11 +72,12 @@ namespace Dolly {
     {
 	glUseProgram(shaderLoader->shaderProgram());
 
-	glm::mat4 proj_matrix = glm::perspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+	glm::mat4 proj_matrix = glm::perspective(50.f, 800.0f / 600.0f, 0.1f, 1000.0f);
 	glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 
 	/* Build mv_matrix here */
-	glm::mat4 mv_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f));
+	glm::mat4 mv_matrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -3.0f)) *
+			      glm::rotate(glm::mat4(), 54.0f, glm::vec3(1.0f, 0.0f, 0.0f));
 	glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
