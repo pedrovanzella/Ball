@@ -75,6 +75,8 @@ namespace Dolly {
 	glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 
 	/* Build mv_matrix here */
+	glm::mat4 mv_matrix = glm::translate(glm::mat4(1.0f), glm::vec3(1.0f));
+	glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
     }
