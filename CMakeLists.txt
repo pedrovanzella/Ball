@@ -27,21 +27,16 @@ configure_file(
   )
 include_directories("${PROJECT_BINARY_DIR}")
 
-if(MSVC)
-	add_subdirectory(lib/glfw)
-	include_directories(lib/glfw/include)
-	target_link_libraries(${EXECUTABLE_NAME} glfw ${GLFW_LIBRARIES})
-else()
-	# GLFW
-	find_package(PkgConfig REQUIRED)
-	pkg_search_module(GLFW REQUIRED glfw3)
-	if(GLFW_FOUND)
-	    message(STATUS "Found GLFW libraries:")
-	    message(STATUS ${GLFW_LIBRARIES})
-	    include_directories(${GLFW_INCLUDE_DIRS})
-	    target_link_libraries(${EXECUTABLE_NAME} ${GLFW_LIBRARIES})
-	endif(GLFW_FOUND)
-endif()
+# GLFW
+#find_package(PkgConfig REQUIRED)
+#pkg_search_module(GLFW REQUIRED glfw3)
+find_package(GLFW REQUIRED glfw3)
+if(GLFW_FOUND)
+    message(STATUS "Found GLFW libraries:")
+    message(STATUS ${GLFW_LIBRARIES})
+    include_directories(${GLFW_INCLUDE_DIRS})
+    target_link_libraries(${EXECUTABLE_NAME} ${GLFW_LIBRARIES})
+endif(GLFW_FOUND)
 
 # GLEW
 find_package(GLEW REQUIRED)
