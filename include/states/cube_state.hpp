@@ -18,6 +18,10 @@ namespace Dolly {
     private:
 	ShaderLoader* shaderLoader;
 	GLuint vao;
+	GLuint position_buffer;
+	GLuint index_buffer;
+	GLint mv_location;
+	GLint proj_location;
     };
 }
 

@@ -1,9 +1,14 @@
 #version 400
 
-in vec3 fragmentColor;
+out vec4 color;
 
-out vec3 color;
+in VS_OUT
+{
+	vec4 color;
+} fs_in;
 
-void main() {
-     color = fragmentColor;
+
+void main(void)
+{
+	color = fs_in.color;
 }
