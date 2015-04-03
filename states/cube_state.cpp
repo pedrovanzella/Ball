@@ -1,4 +1,8 @@
 #include "../include/states/cube_state.hpp"
+#include <glm/glm.hpp>
+#include <glm/mat4x4.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 namespace Dolly {
     CubeState::CubeState(Game* game)
@@ -65,7 +69,14 @@ namespace Dolly {
 
     void CubeState::draw(const float deltaTime)
     {
+	glUseProgram(shaderLoader->shaderProgram());
 
+	glm::mat4 proj_matrix = glm::perspective(50.0f, 800.0f / 600.0f, 0.1f, 1000.0f);
+	glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
+
+	/* Build mv_matrix here */
+
+	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
     }
 
     void CubeState::update(const float deltaTime)
