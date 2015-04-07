@@ -9,6 +9,10 @@ namespace Dolly {
     CubeState::CubeState(Game* game)
     {
 	this->game = game;
+
+	jerk = 0.0f;
+	acceleration = 0.0f;
+	speed = 0.0f;
 	
 	shaderLoader = new ShaderLoader("shaders/cube/vertex.glsl", "shaders/cube/fragment.glsl");
 
@@ -76,15 +80,25 @@ namespace Dolly {
 	glUniformMatrix4fv(proj_location, 1, GL_FALSE, glm::value_ptr(proj_matrix));
 
 	/* Build mv_matrix here */
-	glm::mat4 mv_matrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -3.0f)) *
-			      glm::rotate(glm::mat4(), 54.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	glm::mat4 mv_matrix = glm::translate(glm::mat4(), glm::vec3(0.0f, 0.0f, -5.0f)) *
+			      glm::rotate(glm::mat4(), 54.0f + acceleration, glm::vec3(1.0f, 0.5f, 0.0f));
 	glUniformMatrix4fv(mv_location, 1, GL_FALSE, glm::value_ptr(mv_matrix));
 
 	glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_SHORT, 0);
+
+	if (jerk >= 0.0f) {
+	    jerk -= 0.1;
+	} else {
+	    jerk = 0.0f;
+	}
+	// std::cout << "Jerk = " << jerk << "; Acceleration = " << acceleration << "; Speed = " << speed << std::endl;
     }
 
     void CubeState::update(const float deltaTime)
     {
+	jerk += 0.1;
+	acceleration += jerk * deltaTime;
+	speed += acceleration;
     }
 
     void CubeState::handleInput()

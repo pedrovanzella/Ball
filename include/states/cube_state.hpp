@@ -22,6 +22,10 @@ namespace Dolly {
 	GLuint index_buffer;
 	GLint mv_location;
 	GLint proj_location;
+
+	float jerk;
+	float acceleration;
+	float speed;
     };
 }
 
