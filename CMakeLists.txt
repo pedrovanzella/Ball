@@ -7,9 +7,10 @@ if(CMAKE_BUILD_TYPE STREQUAL "")
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+set(COMPONENT_SOURCE_FILES components/camera.cpp)
 set(STATE_SOURCE_FILES states/triangle_state.cpp states/cube_state.cpp)
 set(UTIL_SOURCE_FILES util/shader_loader.cpp)
-set(SOURCE_FILES main.cpp game.cpp ${STATE_SOURCE_FILES} ${UTIL_SOURCE_FILES})
+set(SOURCE_FILES main.cpp game.cpp ${STATE_SOURCE_FILES} ${UTIL_SOURCE_FILES} ${COMPONENT_SOURCE_FILES})
 set(EXECUTABLE_NAME Ball)
 add_executable(${EXECUTABLE_NAME} ${SOURCE_FILES})
 
