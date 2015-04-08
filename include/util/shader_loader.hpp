@@ -1,6 +1,7 @@
 #ifndef UTIL_SHADER_LOADER_HPP
 #define UTIL_SHADER_LOADER_HPP
 
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <string>
 
